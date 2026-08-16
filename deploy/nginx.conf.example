@@ -1,0 +1,193 @@
+# Masjid Dashboard - Nginx Configuration for Production
+# 
+# Usage:
+# 1. Copy to /etc/nginx/sites-available/masjid.yourdomain.com
+# 2. Enable: sudo ln -s /etc/nginx/sites-available/masjid.yourdomain.com /etc/nginx/sites-enabled/
+# 3. Test: sudo nginx -t
+# 4. Reload: sudo systemctl reload nginx
+#
+# SSL Certificate:
+# sudo certbot --nginx -d masjid.yourdomain.com -d www.masjid.yourdomain.com
+
+# HTTP - Redirect to HTTPS
+server {
+    listen 80;
+    listen [::]:80;
+    server_name masjid.yourdomain.com www.masjid.yourdomain.com;
+
+    # Let's Encrypt challenge location
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    # Redirect all HTTP to HTTPS
+    location / {
+        return 301 https://$server_name$request_uri;
+    }
+}
+
+# HTTPS - Main Server
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name masjid.yourdomain.com www.masjid.yourdomain.com;
+
+    # SSL Configuration
+    ssl_certificate /etc/letsencrypt/live/masjid.yourdomain.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/masjid.yourdomain.com/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers off;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 1d;
+
+    # Security headers
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    # Root directory (web frontend)
+    root /var/www/html/masjid/dist/apps/web;
+    index index.html;
+
+    # Logging
+    access_log /var/log/nginx/masjid_access.log;
+    error_log /var/log/nginx/masjid_error.log;
+
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_proxied expired no-cache no-store private auth;
+    gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml application/javascript application/json;
+    gzip_disable "msie6";
+
+    # Main location - serve static files, fallback to index.html for SPA
+    location / {
+        try_files $uri $uri/ /index.html;
+        
+        # Cache static assets
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+            expires 1y;
+            add_header Cache-Control "public, immutable";
+        }
+    }
+
+    # API Server proxy
+    location /api {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+        
+        # CORS headers
+        add_header Access-Control-Allow-Origin "https://masjid.yourdomain.com" always;
+        add_header Access-Control-Allow-Credentials "true" always;
+        add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS" always;
+        add_header Access-Control-Allow-Headers "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization" always;
+        
+        # Handle preflight requests
+        if ($request_method = 'OPTIONS') {
+            add_header Access-Control-Allow-Origin "https://masjid.yourdomain.com";
+            add_header Access-Control-Allow-Credentials "true";
+            add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS";
+            add_header Access-Control-Allow-Headers "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization";
+            add_header Access-Control-Max-Age 1728000;
+            add_header Content-Type 'text/plain; charset=utf-8';
+            add_header Content-Length 0;
+            return 204;
+        }
+    }
+
+    # PocketBase proxy
+    location /pb {
+        proxy_pass http://localhost:8090;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+        
+        # Increase max body size for file uploads
+        client_max_body_size 10M;
+    }
+
+    # PocketBase admin dashboard (optional - separate subdomain)
+    # Uncomment if you want admin on separate subdomain
+    # location / {
+    #     proxy_pass http://localhost:8090;
+    #     ...
+    # }
+
+    # Static assets with aggressive caching
+    location ~* \.(jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    location ~* \.(css|js)$ {
+        expires 7d;
+        add_header Cache-Control "public, no-transform";
+    }
+
+    # Deny access to hidden files
+    location ~ /\. {
+        deny all;
+        access_log off;
+        log_not_found off;
+    }
+
+    # Health check endpoint
+    location /health {
+        access_log off;
+        return 200 "healthy\n";
+        add_header Content-Type text/plain;
+    }
+}
+
+# API Subdomain (optional - if you want separate api.yourdomain.com)
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name api.masjid.yourdomain.com;
+
+    # SSL Configuration
+    ssl_certificate /etc/letsencrypt/live/api.masjid.yourdomain.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.masjid.yourdomain.com/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers off;
+
+    # Security headers
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Content-Type-Options "nosniff" always;
+
+    location / {
+        proxy_pass http://localhost:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        # CORS for API subdomain
+        add_header Access-Control-Allow-Origin "https://masjid.yourdomain.com" always;
+        add_header Access-Control-Allow-Credentials "true" always;
+    }
+}
+
+# Rate limiting zone (add this in http {} block in /etc/nginx/nginx.conf)
+# limit_req_zone $binary_remote_addr zone=api_limit:10m rate=10r/s;
+# limit_req_zone $binary_remote_addr zone=general_limit:10m rate=30r/s;
