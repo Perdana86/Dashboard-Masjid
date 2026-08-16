@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "setup": "npm install",
+    "postinstall": "node scripts/postinstall.cjs",
     "dev": "concurrently --kill-others --raw \"npm run dev --prefix apps/web\" \"npm run dev --prefix apps/api\" \"npm run dev --prefix apps/pocketbase\"",
     "build": "cd apps/web && node tools/generate-llms.js || true && npm run build --prefix apps/web",
     "build:web": "npm run build --prefix apps/web",
