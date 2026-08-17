@@ -1,6 +1,7 @@
-// Use environment variable if available (for production), otherwise default to localhost
+// Use Vite proxy in development to avoid CORS issues
+// In production, VITE_API_SERVER_URL should be set to the actual API URL
 export const API_SERVER_URL =
-  import.meta.env.VITE_API_SERVER_URL || "http://localhost:3001";
+  import.meta.env.VITE_API_SERVER_URL || "/api-server";
 
 const apiServerClient = {
   fetch: async (url, options = {}) => {

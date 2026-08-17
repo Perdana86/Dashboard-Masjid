@@ -2,3 +2,4 @@ node_modules
 DEPLOYMENT.md
 vault
 dist
+deploy

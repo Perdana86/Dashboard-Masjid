@@ -1,6 +1,7 @@
-import Pocketbase from 'pocketbase';
+import Pocketbase from "pocketbase";
 
-const POCKETBASE_API_URL = '/hcgi/platform';
+// Use environment variable for production, fallback to /pb for Nginx proxy
+const POCKETBASE_API_URL = import.meta.env.VITE_POCKETBASE_URL || "/pb";
 
 const pocketbaseClient = new Pocketbase(POCKETBASE_API_URL);
 

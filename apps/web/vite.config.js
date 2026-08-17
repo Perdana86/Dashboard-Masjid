@@ -2,7 +2,7 @@ import path from "node:path";
 import react from "@vitejs/plugin-react";
 import { createLogger, defineConfig } from "vite";
 import sitePagesPlugin from "./plugins/vite-plugin-site-pages.js";
-import sessionJournalPlugin from "./plugins/session-journal/vite-plugin-session-journal.js";
+// import sessionJournalPlugin from "./plugins/session-journal/vite-plugin-session-journal.js";
 
 import { readFileSync } from "node:fs";
 
@@ -167,10 +167,10 @@ const configWindowFetchMonkeyPatch = `
 // Prevents authentication failures (PB returns 400) from crashing the app — use console.info, not console.error/PM2.
 // [urlPattern, bodyPattern] tuples; align with sandboxErrorUtils ERROR_BLACKLIST.
 const BENIGN_FETCH_ERRORS = [
-	[/hcgi\\/platform\\/api\\/collections\\/.*auth-with-password.*/i, /Failed to authenticate/i],
-	[/hcgi\\/api\\//i, /Insufficient credits/i],
+	[/pb\\/api\\/collections\\/.*auth-with-password.*/i, /Failed to authenticate/i],
+	[/pb\\/api\\//i, /Insufficient credits/i],
 	// A user-supplied integration secret (Stripe/PayPal/Twilio/...) is not set yet — an expected setup state, not a bug to fix.
-	[/hcgi\\/api\\//i, /INTEGRATION_NOT_CONFIGURED/i],
+	[/pb\\/api\\//i, /INTEGRATION_NOT_CONFIGURED/i],
 ];
 
 function isBenignFetchError(url, body) {
@@ -178,7 +178,7 @@ function isBenignFetchError(url, body) {
 		urlPattern.test(url) && (!bodyPattern || bodyPattern.test(body)));
 }
 
-const PLATFORM_URL_PATTERN = /hcgi\\/platform\\//i;
+const PLATFORM_URL_PATTERN = /pb\\//i;
 const VALIDATION_CODE_TEXT_PATTERN = /validation_/;
 
 function hasValidationCode(value) {
@@ -287,38 +287,8 @@ if (window.navigation && window.self !== window.top) {
 const addTransformIndexHtml = {
   name: "add-transform-index-html",
   transformIndexHtml(html) {
-    const tags = [
-      {
-        tag: "script",
-        attrs: { type: "module" },
-        children: configHorizonsRuntimeErrorHandler,
-        injectTo: "head",
-      },
-      {
-        tag: "script",
-        attrs: { type: "module" },
-        children: configHorizonsViteErrorHandler,
-        injectTo: "head",
-      },
-      {
-        tag: "script",
-        attrs: { type: "module" },
-        children: configHorizonsConsoleErrorHandler,
-        injectTo: "head",
-      },
-      {
-        tag: "script",
-        attrs: { type: "module" },
-        children: configWindowFetchMonkeyPatch,
-        injectTo: "head",
-      },
-      {
-        tag: "script",
-        attrs: { type: "module" },
-        children: configNavigationHandler,
-        injectTo: "head",
-      },
-    ];
+    // Disable all Horizons error handlers - they interfere with fetch
+    const tags = [];
 
     if (
       !isDev &&
@@ -370,7 +340,7 @@ export default defineConfig({
   },
   customLogger: logger,
   plugins: [
-    ...(isDev ? [sitePagesPlugin(), sessionJournalPlugin()] : []),
+    ...(isDev ? [sitePagesPlugin()] : []),
     react(),
     addTransformIndexHtml,
   ],
@@ -387,10 +357,15 @@ export default defineConfig({
       ],
     },
     proxy: {
-      "/hcgi/platform": {
+      "/pb": {
         target: "http://localhost:8090",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/hcgi\/platform/, ""),
+        rewrite: (path) => path.replace(/^\/pb/, ""),
+      },
+      "/api-server": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-server/, ""),
       },
     },
   },
@@ -412,5 +387,8 @@ export default defineConfig({
         pluginTimings: false,
       },
     },
+    // Show detailed build output
+    reportCompressedSize: true,
+    chunkSizeWarningLimit: 1000,
   },
 });

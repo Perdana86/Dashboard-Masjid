@@ -2,23 +2,24 @@
   "name": "monorepo",
   "version": "0.0.0",
   "private": true,
+  "description": "Masjid Dashboard - Monorepo with independent apps",
   "scripts": {
-    "setup": "npm install",
-    "postinstall": "node scripts/postinstall.cjs",
+    "setup": "npm install && cd apps/web && npm install && cd ../api && npm install && cd ../pocketbase && npm install",
+    "install:all": "npm run setup",
     "dev": "concurrently --kill-others --raw \"npm run dev --prefix apps/web\" \"npm run dev --prefix apps/api\" \"npm run dev --prefix apps/pocketbase\"",
-    "build": "node apps/web/tools/generate-llms.js || true && npm run build --workspace=apps/web",
-    "build:web": "npm run build --prefix apps/web",
+    "build": "cd apps/web && npm run build",
+    "build:web": "cd apps/web && npm run build",
     "start": "concurrently --kill-others --raw \"npm run start --prefix apps/web\" \"npm run start --prefix apps/api\" \"npm run start --prefix apps/pocketbase\"",
-    "start:web": "npm run start --prefix apps/web",
-    "start:api": "npm run start --prefix apps/api",
-    "start:pocketbase": "npm run start --prefix apps/pocketbase",
-    "lint": "concurrently --raw \"npm run lint --prefix apps/web\" \"npm run lint --prefix apps/api\""
+    "start:web": "cd apps/web && npm run start",
+    "start:api": "cd apps/api && npm run start",
+    "start:pocketbase": "cd apps/pocketbase && npm run start",
+    "lint": "concurrently --raw \"cd apps/web && npm run lint\" \"cd apps/api && npm run lint\"",
+    "clean": "cd apps/web && npm run clean && cd ../api && npm run clean && cd ../pocketbase && npm run clean"
   },
   "devDependencies": {
-    "concurrently": "^10.0.4",
-    "knip": "^6.32.1"
+    "concurrently": "^10.0.4"
   },
-  "workspaces": [
-    "apps/*"
-  ]
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }

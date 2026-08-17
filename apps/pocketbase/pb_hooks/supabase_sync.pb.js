@@ -19,9 +19,9 @@
  *   SUPABASE_SERVICE_ROLE_KEY  project service-role key (secret!)
  * Optional:
  *   POCKETBASE_PUBLIC_URL      origin for absolute file URLs; when unset the
- *                              stored URL is the in-app proxy path
- *                              /hcgi/platform/api/files/... which resolves
- *                              correctly when the dashboard loads the image.
+ *                              stored URL is the in-app proxy path /pb/api/files/...
+ *                              which resolves correctly when the dashboard loads
+ *                              the image.
  */
 
 // collection -> { table, fields, fileFields }
@@ -159,8 +159,8 @@ function fileBaseUrl() {
   const publicUrl = $os.getenv("POCKETBASE_PUBLIC_URL") || "";
   if (publicUrl) return publicUrl.replace(/\/+$/, "");
   // In-app proxy path — resolves correctly when the dashboard loads the
-  // image from the same origin.
-  return "/hcgi/platform";
+  // image from the same origin. Use /pb for production Nginx proxy.
+  return "/pb";
 }
 
 function buildFileUrl(collectionName, recordId, filename) {

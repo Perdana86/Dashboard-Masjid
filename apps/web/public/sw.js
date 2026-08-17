@@ -3,48 +3,48 @@
  * - Static assets: stale-while-revalidate
  * - API / PocketBase / external data: network-only (sync stays live online)
  */
-const CACHE_VERSION = 'masjid-pwa-v1';
+const CACHE_VERSION = "masjid-pwa-v1";
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const ASSET_CACHE = `${CACHE_VERSION}-assets`;
 
 const PRECACHE_URLS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icons/icon-512.png',
-  '/icons/maskable-512.png',
+  "/",
+  "/index.html",
+  "/manifest.json",
+  "/icons/icon-512.png",
+  "/icons/maskable-512.png",
 ];
 
-self.addEventListener('install', (event) => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
     (async () => {
       const cache = await caches.open(SHELL_CACHE);
       await Promise.all(
         PRECACHE_URLS.map((url) =>
-          cache.add(new Request(url, { cache: 'reload' })).catch(() => {})
-        )
+          cache.add(new Request(url, { cache: "reload" })).catch(() => {}),
+        ),
       );
       await self.skipWaiting();
-    })()
+    })(),
   );
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
       const keys = await caches.keys();
       await Promise.all(
         keys
           .filter((k) => !k.startsWith(CACHE_VERSION))
-          .map((k) => caches.delete(k))
+          .map((k) => caches.delete(k)),
       );
       await self.clients.claim();
-    })()
+    })(),
   );
 });
 
-self.addEventListener('message', (event) => {
-  if (event.data === 'SKIP_WAITING') self.skipWaiting();
+self.addEventListener("message", (event) => {
+  if (event.data === "SKIP_WAITING") self.skipWaiting();
 });
 
 function isSameOrigin(url) {
@@ -56,15 +56,15 @@ async function handleNavigation(request) {
   try {
     const fresh = await fetch(request);
     const cache = await caches.open(SHELL_CACHE);
-    cache.put('/', fresh.clone()).catch(() => {});
-    cache.put('/index.html', fresh.clone()).catch(() => {});
+    cache.put("/", fresh.clone()).catch(() => {});
+    cache.put("/index.html", fresh.clone()).catch(() => {});
     return fresh;
   } catch (err) {
     const cache = await caches.open(SHELL_CACHE);
     return (
       (await cache.match(request)) ||
-      (await cache.match('/index.html')) ||
-      (await cache.match('/')) ||
+      (await cache.match("/index.html")) ||
+      (await cache.match("/")) ||
       Response.error()
     );
   }
@@ -76,7 +76,7 @@ async function handleAsset(request) {
   const cached = await cache.match(request);
   const network = fetch(request)
     .then((response) => {
-      if (response && response.status === 200 && response.type === 'basic') {
+      if (response && response.status === 200 && response.type === "basic") {
         cache.put(request, response.clone()).catch(() => {});
       }
       return response;
@@ -101,25 +101,26 @@ async function handleCrossOrigin(request) {
   }
 }
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener("fetch", (event) => {
   const { request } = event;
-  if (request.method !== 'GET') return;
+  if (request.method !== "GET") return;
 
   const url = new URL(request.url);
 
   // Never cache API, realtime, or PocketBase data requests — sync must stay live.
+  // Using /pb prefix (production standard) instead of Hostinger-specific /hcgi
   if (
-    url.pathname.startsWith('/hcgi/') ||
-    url.pathname.startsWith('/api/') ||
-    url.pathname.includes('/api/realtime') ||
-    url.pathname.includes('/api/collections/') ||
-    url.hostname.includes('pocketbase') ||
-    url.hostname.includes('myquran.com')
+    url.pathname.startsWith("/pb/") ||
+    url.pathname.startsWith("/api/") ||
+    url.pathname.includes("/api/realtime") ||
+    url.pathname.includes("/api/collections/") ||
+    url.hostname.includes("pocketbase") ||
+    url.hostname.includes("myquran.com")
   ) {
     return; // network-only
   }
 
-  if (request.mode === 'navigate') {
+  if (request.mode === "navigate") {
     event.respondWith(handleNavigation(request));
     return;
   }

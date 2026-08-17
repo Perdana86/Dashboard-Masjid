@@ -9,7 +9,9 @@
     "migrations:up": "node scripts/serve.js horizons migrations:up --encryptionEnv=PB_ENCRYPTION_KEY --dir=./pb_data --migrationsDir=./pb_migrations --hooksDir=./pb_hooks --hooksWatch=false",
     "migrations:revert": "node scripts/serve.js horizons migrations:revert --encryptionEnv=PB_ENCRYPTION_KEY --dir=./pb_data --migrationsDir=./pb_migrations --hooksDir=./pb_hooks --hooksWatch=false",
     "migrations:snapshot": "node scripts/serve.js migrate collections --encryptionEnv=PB_ENCRYPTION_KEY --dir=./pb_data --migrationsDir=./pb_snapshots",
-    "update": "node scripts/serve.js update --encryptionEnv=PB_ENCRYPTION_KEY --backup=0"
+    "update": "node scripts/serve.js update --encryptionEnv=PB_ENCRYPTION_KEY --backup=0",
+    "clean": "rm -rf pb_data/logs",
+    "backup": "node scripts/serve.js backup --encryptionEnv=PB_ENCRYPTION_KEY --dir=./pb_data"
   },
   "dependencies": {
     "dotenv": "^17.4.2"
