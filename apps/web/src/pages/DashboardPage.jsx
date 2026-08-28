@@ -105,7 +105,7 @@ const DashboardPage = () => {
   return (
     <div className="min-h-[100dvh] bg-[var(--m-bg)] text-emerald-50">
       <Helmet>
-        <title>Masjid Al-Amanah</title>
+        <title>Dashboard Masjid</title>
         <meta
           name="description"
           content="Dashboard masjid dengan jadwal sholat otomatis, jam digital waktu Asia/Jakarta, slide informasi kegiatan, dan running teks pengumuman jamaah."
@@ -135,7 +135,7 @@ const DashboardPage = () => {
               )}
               <div>
                 <h1 className="font-display text-2xl leading-tight text-white md:text-3xl">
-                  {(settings && settings.mosque_name) || "Masjid Al-Amanah"}
+                  {(settings && settings.mosque_name) || "Dashboard Masjid"}
                 </h1>
                 <p className="text-sm text-emerald-100/60">
                   {(settings && settings.tagline) ||
@@ -186,12 +186,12 @@ const DashboardPage = () => {
             {settings && settings.saldo_visible !== false ? (
               <div className="border border-[color-mix(in_srgb,var(--m-primary)_25%,transparent)] bg-[var(--m-surface)]/80 px-4 py-3 md:px-5 md:py-4">
                 <p className="text-[10px] uppercase tracking-[0.28em] text-[var(--m-primary)] md:text-xs">
-                  {(settings && settings.saldo_label) || "Saldo Perpekan Jumat"}
+                  {(settings && settings.saldo_label) || "Informasi Saldo"}
                 </p>
                 <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-4">
                   <div className="min-w-0">
                     <p className="text-[10px] uppercase tracking-wider text-emerald-100/50 md:text-xs">
-                      {(settings && settings.label_sisa) || "Sisa Saldo"}
+                      {(settings && settings.label_sisa) || "Sisa Saldo Awal"}
                     </p>
                     <p className="font-num truncate text-lg leading-tight text-sky-300 md:text-2xl lg:text-3xl">
                       {formatIdr(Number(settings.saldo_sisa || 0))}
@@ -216,7 +216,7 @@ const DashboardPage = () => {
                   </div>
                   <div className="min-w-0">
                     <p className="text-[10px] uppercase tracking-wider text-emerald-100/50 md:text-xs">
-                      {(settings && settings.label_kas) || "Saldo Kas"}
+                      {(settings && settings.label_kas) || "Sisa Saldo Akhir"}
                     </p>
                     <p className="font-num truncate text-lg leading-tight text-[var(--m-primary)] md:text-2xl lg:text-3xl">
                       {formatIdr(Number(settings.saldo_kas || 0))}
@@ -405,7 +405,7 @@ const DashboardPage = () => {
           <span>
             {(settings && settings.address) || ""} &middot; &copy;{" "}
             {new Date().getFullYear()}{" "}
-            {(settings && settings.mosque_name) || "Masjid Al-AManah"}
+            {(settings && settings.mosque_name) || "Dashboard Masjid"}
           </span>
           <span className="flex items-center gap-4">
             <button

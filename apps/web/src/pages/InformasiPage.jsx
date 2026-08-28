@@ -184,7 +184,7 @@ const InformasiPage = () => {
                     : "0 1px 8px rgba(0,0,0,0.45)",
                 }}
               >
-                {(settings && settings.mosque_name) || "Masjid Al-Amanah"}
+                {(settings && settings.mosque_name) || "Dashboard Masjid"}
               </h1>
             </div>
             <div className="flex shrink-0 items-center gap-4 md:gap-6">

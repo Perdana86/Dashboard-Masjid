@@ -2,7 +2,7 @@
   "name": "monorepo",
   "version": "0.0.0",
   "private": true,
-  "description": "Masjid Dashboard - Monorepo with independent apps",
+  "description": "Masjid Dashboard apps",
   "scripts": {
     "setup": "npm install && cd apps/web && npm install && cd ../api && npm install && cd ../pocketbase && npm install",
     "install:all": "npm run setup",

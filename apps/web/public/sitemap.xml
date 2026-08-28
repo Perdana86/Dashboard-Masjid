@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://alamanahkeu.site/</loc>
+    <loc>http://127.0.0.1/</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
-    <loc>https://alamanahkeu.site/informasi</loc>
+    <loc>http://127.0.0.1/informasi</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
-    <loc>https://alamanahkeu.site/bio</loc>
+    <loc>http://127.0.0.1/bio</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
-    <loc>https://alamanahkeu.site/activity</loc>
+    <loc>http://127.0.0.1/activity</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>
   </url>
   <url>
-    <loc>https://alamanahkeu.site/admin/login</loc>
+    <loc>http://127.0.0.1/admin/login</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>1</priority>

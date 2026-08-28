@@ -35,12 +35,18 @@ migrate(
     app.save(collection);
 
     try {
-      const rows = app.findRecordsByFilter("settings", "id != ''", "created", 10, 0);
+      const rows = app.findRecordsByFilter(
+        "settings",
+        "id != ''",
+        "created",
+        10,
+        0,
+      );
       rows.forEach((r) => {
         if (r.get("saldo_pemasukan") == null) r.set("saldo_pemasukan", 0);
         if (r.get("saldo_pengeluaran") == null) r.set("saldo_pengeluaran", 0);
         if (r.get("saldo_visible") == null) r.set("saldo_visible", true);
-        if (!r.get("saldo_label")) r.set("saldo_label", "Saldo Perpekan Jumat");
+        if (!r.get("saldo_label")) r.set("saldo_label", "Informasi Saldo");
         app.save(r);
       });
     } catch (_) {
@@ -49,7 +55,12 @@ migrate(
   },
   (app) => {
     const collection = app.findCollectionByNameOrId("settings");
-    ["saldo_pemasukan", "saldo_pengeluaran", "saldo_visible", "saldo_label"].forEach((name) => {
+    [
+      "saldo_pemasukan",
+      "saldo_pengeluaran",
+      "saldo_visible",
+      "saldo_label",
+    ].forEach((name) => {
       try {
         collection.fields.removeByName(name);
       } catch (_) {}

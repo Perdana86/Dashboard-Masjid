@@ -2,8 +2,8 @@
 migrate((app) => {
   let settings = app.settings();
 
-  settings.meta.appName = "Masjid Dashboard";
-  settings.meta.appURL = ""; // Empty for production - will be set via environment variable
+  settings.meta.appName = "Dashboard Masjid";
+  settings.meta.appURL = "http://localhost:8090"; // Development URL
   settings.meta.hideControls = true;
 
   settings.logs.maxDays = 7;

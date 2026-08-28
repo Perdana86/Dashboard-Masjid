@@ -1,4 +1,4 @@
-/* Service Worker for Dashboard Masjid Al-Amanah PWA
+/* Service Worker for Dashboard Dashboard Masjid PWA
  * - App shell: network-first, offline fallback to cached index
  * - Static assets: stale-while-revalidate
  * - API / PocketBase / external data: network-only (sync stays live online)

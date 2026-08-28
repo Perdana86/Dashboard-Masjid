@@ -36,7 +36,7 @@ const AdminLoginPage = () => {
   return (
     <div className="masjid-pattern flex min-h-[100dvh] items-center justify-center bg-[var(--m-bg)] px-6 py-16 text-emerald-50">
       <Helmet>
-        <title>Login Admin | Masjid Al-Amanah</title>
+        <title>Login Admin | Pengurus Masjid</title>
         <meta
           name="description"
           content="Halaman masuk pengurus masjid untuk mengelola jadwal, slide informasi, dan running teks dashboard."
@@ -50,7 +50,7 @@ const AdminLoginPage = () => {
           </span>
           <div>
             <h1 className="font-display text-2xl text-white">
-              Panel Admin Masjid Al-Amanah
+              Panel Admin Pengurus Masjid
             </h1>
             <p className="text-sm text-emerald-100/60">
               Khusus pengurus masjid.

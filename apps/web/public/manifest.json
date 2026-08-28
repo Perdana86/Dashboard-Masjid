@@ -1,7 +1,7 @@
 {
-  "name": "Masjid Al-Amanah",
+  "name": "Dashboard Masjid",
   "short_name": "Masjid",
-  "description": "Dashboard masjid dengan jadwal sholat, iqomah, saldo jumat, dan slideshow informasi jamaah.",
+  "description": "Dashboard masjid dengan jadwal sholat, iqomah, informasi saldo, dan slideshow informasi jamaah.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "/",
@@ -9,8 +9,8 @@
   "display": "fullscreen",
   "display_override": ["fullscreen", "standalone", "minimal-ui"],
   "orientation": "any",
-  "background_color": "#04100c",
-  "theme_color": "#04100c",
+  "background_color": "#011811",
+  "theme_color": "#011811",
   "categories": ["education", "lifestyle", "productivity"],
   "icons": [
     {

@@ -7,12 +7,12 @@ import {
 } from "@/lib/masjid";
 
 const DEFAULTS = {
-  pwa_app_name: "Masjid Al-Amanah",
+  pwa_app_name: "Dashboard Masjid",
   pwa_short_name: "Masjid",
   pwa_description:
-    "Dashboard masjid dengan jadwal sholat, iqomah, saldo jumat, dan slideshow informasi jamaah.",
-  pwa_theme_color: "#04100c",
-  pwa_bg_color: "#04100c",
+    "Dashboard masjid dengan jadwal sholat, iqomah, informasi saldo, dan slideshow informasi jamaah.",
+  pwa_theme_color: "#011811",
+  pwa_bg_color: "#011811",
 };
 
 const STATIC_ICONS = [

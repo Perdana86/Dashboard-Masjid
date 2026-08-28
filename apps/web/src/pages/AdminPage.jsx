@@ -131,7 +131,7 @@ const AdminPage = () => {
               quote: "",
               quote_source: "",
               city_id: "1301",
-              city_name: "KOTA JAKARTA PUSAT",
+              city_name: "JAKARTA PUSAT",
               slide_seconds: 8,
               theme_bg: THEME_DEFAULTS.theme_bg,
               theme_surface: THEME_DEFAULTS.theme_surface,
@@ -143,15 +143,15 @@ const AdminPage = () => {
               saldo_sisa: 0,
               saldo_kas: 0,
               saldo_visible: true,
-              saldo_label: "Saldo Perpekan Jumat",
+              saldo_label: "Informasi Saldo",
               label_penerimaan: "Penerimaan",
               label_pengeluaran: "Pengeluaran",
-              label_sisa: "Sisa Saldo",
-              label_kas: "Saldo Kas",
-              pwa_app_name: "Masjid Al-Amanah",
+              label_sisa: "Sisa Saldo Awal",
+              label_kas: "Saldo Saldo Akhir",
+              pwa_app_name: "Dashboard Masjid",
               pwa_short_name: "Masjid",
               pwa_description:
-                "Dashboard masjid dengan jadwal sholat, iqomah, saldo jumat, dan slideshow informasi jamaah.",
+                "Dashboard masjid dengan jadwal sholat, iqomah, informasi saldo, dan slideshow informasi jamaah.",
               pwa_theme_color: THEME_DEFAULTS.theme_bg,
               pwa_bg_color: THEME_DEFAULTS.theme_bg,
             },
@@ -315,11 +315,11 @@ const AdminPage = () => {
         "saldo_visible",
         form.saldo_visible === false ? "false" : "true",
       );
-      fd.append("saldo_label", form.saldo_label || "Saldo Perpekan Jumat");
+      fd.append("saldo_label", form.saldo_label || "Informasi Saldo");
       fd.append("label_penerimaan", form.label_penerimaan || "Penerimaan");
       fd.append("label_pengeluaran", form.label_pengeluaran || "Pengeluaran");
       fd.append("label_sisa", form.label_sisa || "Sisa Saldo");
-      fd.append("label_kas", form.label_kas || "Saldo Kas");
+      fd.append("label_kas", form.label_kas || "Saldo Akhir");
       fd.append("pwa_app_name", form.pwa_app_name || "");
       fd.append("pwa_short_name", form.pwa_short_name || "");
       fd.append("pwa_description", form.pwa_description || "");
@@ -391,12 +391,12 @@ const AdminPage = () => {
     { id: "umum", label: "Konten Dashboard" },
     { id: "bio", label: "Bio" },
     { id: "kegiatan", label: "Kegiatan" },
-    { id: "saldo", label: "Saldo Jumat" },
+    { id: "saldo", label: "Informasi Saldo" },
     { id: "slide_dashboard", label: `Slide Dashboard (${dashCount})` },
     { id: "slide_info", label: `Slide Informasi (${infoCount})` },
     { id: "jadwal_slide", label: "Jadwal Slide" },
     { id: "tema", label: "Tema Warna" },
-    { id: "pwa", label: "PWA" },
+    { id: "pwa", label: "Pengaturan PWA" },
     { id: "database", label: "Database" },
   ];
 
@@ -412,7 +412,7 @@ const AdminPage = () => {
   return (
     <div className="min-h-[100dvh] bg-[var(--m-bg)] text-emerald-50">
       <Helmet>
-        <title>Panel Admin | Masjid Al-Amanah</title>
+        <title>Panel Admin | Pengurus Masjid</title>
         <meta
           name="description"
           content="Panel admin masjid untuk mengedit nama masjid, logo, running teks, kutipan, kota jadwal sholat, slide dashboard, slide informasi (gambar & PDF), dan warna tema dashboard."
@@ -425,7 +425,7 @@ const AdminPage = () => {
             Panel Admin
           </p>
           <h1 className="font-display text-2xl text-white">
-            Pengelola Masjid Al-Amanah
+            Pengelola Pengurus Masjid
           </h1>
           <p className="text-sm text-emerald-100/50">
             Masuk sebagai {user ? user.email : "-"}
@@ -801,7 +801,7 @@ const AdminPage = () => {
                     onChange={(e) =>
                       setBioForm({ ...bioForm, mosque_name: e.target.value })
                     }
-                    placeholder="Masjid Al-Amanah"
+                    placeholder="Dashboard Masjid"
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
@@ -816,7 +816,7 @@ const AdminPage = () => {
                     onChange={(e) =>
                       setBioForm({ ...bioForm, email: e.target.value })
                     }
-                    placeholder="info@masjid-alamanah.site"
+                    placeholder="info@masjid.com"
                   />
                 </div>
                 <div className="flex flex-col gap-1.5 lg:col-span-2">
@@ -1011,7 +1011,7 @@ const AdminPage = () => {
           <div className="max-w-5xl space-y-6">
             <div>
               <h2 className="font-display text-xl text-white">
-                Saldo Perpekan Jumat
+                Informasi Saldo
               </h2>
               <p className="mt-1 text-sm text-emerald-100/55">
                 Atur judul, nama label, dan nilai tiap kolom. Nilai boleh
@@ -1031,7 +1031,7 @@ const AdminPage = () => {
                 onChange={(e) =>
                   setForm({ ...form, saldo_label: e.target.value })
                 }
-                placeholder="Saldo Perpekan Jumat"
+                placeholder="Informasi Saldo"
               />
             </div>
 
@@ -1060,22 +1060,22 @@ const AdminPage = () => {
                 {
                   labelKey: "label_sisa",
                   labelId: "label_sisa",
-                  labelTitle: "Nama Label Sisa Saldo",
-                  labelPlaceholder: "Sisa Saldo",
+                  labelTitle: "Nama Label Saldo Awal",
+                  labelPlaceholder: "Nama Label Saldo Awal",
                   valueKey: "saldo_sisa",
                   valueId: "saldo_sisa",
                   preview: sisaSaldo,
-                  defaultLabel: "Sisa Saldo",
+                  defaultLabel: "Nama Label Saldo Awal",
                 },
                 {
                   labelKey: "label_kas",
                   labelId: "label_kas",
-                  labelTitle: "Nama Label Saldo Kas",
-                  labelPlaceholder: "Saldo Kas",
+                  labelTitle: "Nama Label Saldo Akhir",
+                  labelPlaceholder: "Nama Label Saldo Akhir",
                   valueKey: "saldo_kas",
                   valueId: "saldo_kas",
                   preview: saldoKas,
-                  defaultLabel: "Saldo Kas",
+                  defaultLabel: "Nama Label Saldo Akhir",
                 },
               ].map((col) => (
                 <div
@@ -1403,7 +1403,7 @@ const AdminPage = () => {
                             form.theme_primary || THEME_DEFAULTS.theme_primary,
                         }}
                       >
-                        Masjid Al-Amanah
+                        Dashboard Masjid
                       </p>
                       <p
                         className="mt-0.5 font-display text-base leading-tight"
@@ -1411,7 +1411,7 @@ const AdminPage = () => {
                           color: form.theme_text || THEME_DEFAULTS.theme_text,
                         }}
                       >
-                        {form.mosque_name || "Masjid Al-Amanah"}
+                        {form.mosque_name || "Dashboard Masjid"}
                       </p>
                     </div>
                     <div className="text-right">
@@ -1492,7 +1492,7 @@ const AdminPage = () => {
                             form.theme_primary || THEME_DEFAULTS.theme_primary,
                         }}
                       >
-                        Saldo Perpekan Jumat
+                        Informasi Saldo
                       </p>
                       <div className="mt-2 grid grid-cols-3 gap-2 text-center">
                         <div>
@@ -1693,7 +1693,7 @@ const AdminPage = () => {
                   onChange={(e) =>
                     setForm({ ...form, pwa_app_name: e.target.value })
                   }
-                  placeholder="Dashboard Admin Masjid Al-Amanah"
+                  placeholder="Dashboard Admin Pengurus Masjid"
                 />
                 <p className="text-xs text-emerald-100/45">
                   Tampil sebagai judul penuh pada layar install / app launcher.
@@ -1729,7 +1729,7 @@ const AdminPage = () => {
                   onChange={(e) =>
                     setForm({ ...form, pwa_description: e.target.value })
                   }
-                  placeholder="Dashboard masjid dengan jadwal sholat, iqomah, saldo jumat, dan slideshow informasi jamaah."
+                  placeholder="Dashboard masjid dengan jadwal sholat, iqomah, informasi saldo, dan slideshow informasi jamaah."
                 />
               </div>
             </div>

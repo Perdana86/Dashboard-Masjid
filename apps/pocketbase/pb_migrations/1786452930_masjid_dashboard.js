@@ -74,12 +74,12 @@ migrate(
       app.findRecordsByFilter("settings", "id != ''", "", 1, 0).length === 0
     ) {
       const s = new Record(settings);
-      s.set("mosque_name", "Masjid Nurul Iman");
+      s.set("mosque_name", "Masjid An-Nabawi");
       s.set("tagline", "Jamaah Sejuk, Hati Teduh");
-      s.set("address", "Jl. Kenanga Raya No. 24, Jakarta Selatan");
+      s.set("address", "Jl. Raya No. 24, Jakarta Selatan DKI Jakarta");
       s.set(
         "running_text",
-        "Selamat datang di Masjid Nurul Iman. Kajian rutin setiap Ahad pagi ba'da Subuh bersama Ustadz Abdul Hakim. | Jadwal TPQ anak: Senin - Kamis pukul 16.00 WIB. | Mari jaga ketenangan dan kebersihan masjid, matikan nada dering ponsel Anda.",
+        "Selamat datang di Masjid An-Nabawi. | Kajian rutin setiap Ahad pagi ba'da Subuh. | Jadwal TPQ anak: Senin - Kamis pukul 16.00 WIB. | Mari jaga ketenangan dan kebersihan masjid, matikan nada dering ponsel Anda.",
       );
       s.set(
         "quote",
@@ -87,7 +87,7 @@ migrate(
       );
       s.set("quote_source", "QS. Al-Ankabut: 45");
       s.set("city_id", "1301");
-      s.set("city_name", "KOTA JAKARTA");
+      s.set("city_name", "DKI JAKARTA");
       s.set("accent", "#c9a227");
       s.set("slide_seconds", 8);
       app.save(s);

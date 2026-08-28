@@ -56,9 +56,25 @@ app.use(
     },
   }),
 );
+// Parse CORS origins from env (comma-separated string to array)
+const corsOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",")
+      .map((origin) => origin.trim())
+      .filter((origin) => origin)
+  : false;
+
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || false, // deny cors when unset (on purpose)
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+
+      if (Array.isArray(corsOrigins) && corsOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "QUERY"],
     allowedHeaders: ["Authorization", "Content-Type"],
     credentials: true,
@@ -77,6 +93,15 @@ app.use(
     limit: BodyLimit,
   }),
 );
+
+// Test root route directly in main.js
+app.get("/", (req, res) => {
+  res.json({
+    name: "Masjid API",
+    version: "1.0.0",
+    message: "Root endpoint working!",
+  });
+});
 
 app.use("/", routes());
 
