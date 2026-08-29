@@ -180,7 +180,7 @@ Setelah PocketBase berjalan:
 1. Buka http://localhost:8090/\_/
 2. Login dengan kredensial dari `.env`:
    - Email: `admin@admin.com`
-   - Password: `password123`
+   - Password: `password`
 3. Migrations akan otomatis dijalankan
 4. Verifikasi collections sudah terbuat
 
