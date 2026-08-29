@@ -851,6 +851,6 @@ sudo journalctl -u nginx -f
 
 **Last Updated:** 2026-08-29  
 **Version:** 1.0.0  
-**Maintained by:** Perdana AI
-**Developmen by** Perdana Tech
-**Powered by** **ALLAH SWT**
+**Maintained by:** Perdana AI  
+**Developmen by:** Perdana Tech  
+**Powered by:** **ALLAH SWT**
