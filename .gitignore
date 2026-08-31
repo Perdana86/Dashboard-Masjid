@@ -5,3 +5,6 @@ deploy
 \apps\pocketbase\pb_data
 BUILD-FIX.md
 DEPLOY.md
+DEVELOPMENT-MODE.md
+README-MAIN.md
+TROUBLESHOOTING-START.md
