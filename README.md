@@ -9,7 +9,43 @@ Panduan lengkap untuk men-deploy aplikasi Dashboard-Masjid di lingkungan lokal d
 - [Deployment Lokal (Development)](#deployment-lokal-development)
 - [Deployment Production Server](#deployment-production-server)
 - [Konfigurasi Environment](#konfigurasi-environment)
-- [Troubleshooting](#troubleshooting)
+- [🔧 Troubleshooting PocketBase 404](#troubleshooting-pocketbase-404)
+- [Dokumentasi Lengkap](#dokumentasi-lengkap)
+
+---
+
+## ⚠️ PENTING: Fix PocketBase 404 Error
+
+Jika mendapatkan error **404 Not Found** saat mengakses PocketBase admin:
+
+### Quick Fix
+
+```bash
+# 1. Update konfigurasi Nginx
+sudo nano /etc/nginx/sites-available/dashboard-masjid
+
+# Pastikan location /pb seperti ini:
+location ~ ^/pb(/|$)(.*) {
+    proxy_pass http://127.0.0.1:8090/$2;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+}
+
+# 2. Reload Nginx
+sudo nginx -s reload
+
+# 3. Test access
+curl http://localhost/pb/
+```
+
+### Test Script
+
+```bash
+chmod +x test-url-routing.sh
+./test-url-routing.sh
+```
+
+**Lihat:** [`TROUBLESHOOT-POCKETBASE-404.md`](./TROUBLESHOOT-POCKETBASE-404.md) untuk solusi lengkap.
 
 ---
 
