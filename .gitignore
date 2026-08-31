@@ -3,3 +3,5 @@ vault
 dist
 deploy
 \apps\pocketbase\pb_data
+BUILD-FIX.md
+DEPLOY.md
