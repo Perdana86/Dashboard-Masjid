@@ -51,7 +51,7 @@ module.exports = {
       name: "web-frontend",
       cwd: "./apps/web",
       script: "npm",
-      args: "start",
+      args: "run preview", // Use preview for production (NOT dev server)
       env: {
         NODE_ENV: "production",
         VITE_API_URL: "https://api.masjid-anda.com",

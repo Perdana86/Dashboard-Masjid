@@ -8,7 +8,7 @@
     "dev:preview": "vite preview --host :: --port 3000",
     "build": "node scripts/build.js",
     "build:legacy": "node tools/generate-llms.js && vite build --outDir ../../dist/apps/web",
-    "start": "vite --host :: --port 3000",
+    "start": "vite preview --outDir ../../dist/apps/web --host :: --port 3000",
     "preview": "vite preview --outDir ../../dist/apps/web --host :: --port 3000",
     "lint": "eslint . --quiet; lint_status=$?; eslint \"src/**/*.jsx\" --config eslint.config.mjs --format ./eslint.unicode-escapes-formatter.mjs --no-error-on-unmatched-pattern; exit $lint_status",
     "lint:warn": "eslint .",

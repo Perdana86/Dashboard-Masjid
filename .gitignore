@@ -1,6 +1,7 @@
 node_modules
 vault
 dist
+nginx
 \apps\pocketbase\pb_data
 BUILD-FIX.md
 DEPLOY.md
@@ -8,3 +9,7 @@ DEVELOPMENT-MODE.md
 README-MAIN.md
 TROUBLESHOOTING-START.md
 POST-DEPLOY-SETUP.md
+DEPLOYMENT-CHECKLIST.md
+PRODUCTION-DEPLOYMENT-FIX.md
+BUILD-OUTPUT-FIX.md
+fix-production-deployment.sh
