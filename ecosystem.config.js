@@ -14,14 +14,14 @@ module.exports = {
       script: "./pocketbase", // Binary langsung (bukan node scripts/serve.js)
       args: "serve --http=127.0.0.1:8090 --encryptionEnv=PB_ENCRYPTION_KEY --dir=./pb_data --migrationsDir=./pb_migrations --hooksDir=./pb_hooks",
       env: {
-        PB_ENCRYPTION_KEY: "GantiDenganKunciRahasia32Karakter",
-        PB_SUPERUSER_EMAIL: "admin@masjid-anda.com",
-        PB_SUPERUSER_PASSWORD: "PasswordSangatRahasia123!",
+        PB_ENCRYPTION_KEY: "ThisIsA32CharacterSecretKey12345",
+        PB_SUPERUSER_EMAIL: "admin@admin.com",
+        PB_SUPERUSER_PASSWORD: "password123",
       },
       env_production: {
-        PB_ENCRYPTION_KEY: "GantiDenganKunciRahasia32Karakter",
-        PB_SUPERUSER_EMAIL: "admin@masjid-anda.com",
-        PB_SUPERUSER_PASSWORD: "PasswordSangatRahasia123!",
+        PB_ENCRYPTION_KEY: "ThisIsA32CharacterSecretKey12345",
+        PB_SUPERUSER_EMAIL: "admin@admin.com",
+        PB_SUPERUSER_PASSWORD: "password123",
       },
       autorestart: true,
       watch: false,
@@ -36,8 +36,8 @@ module.exports = {
     {
       name: "api-server",
       cwd: "./apps/api",
-      script: "npm",
-      args: "start",
+      script: "node",
+      args: "src/main.js",
       env: {
         NODE_ENV: "production",
         PORT: "3001",
@@ -50,12 +50,12 @@ module.exports = {
     {
       name: "web-frontend",
       cwd: "./apps/web",
-      script: "npm",
-      args: "run preview", // Use preview for production (NOT dev server)
+      script: "node",
+      args: "node_modules/vite/bin/vite.js --host 127.0.0.1 --port 3000", // Production port 3000
       env: {
         NODE_ENV: "production",
-        VITE_API_URL: "https://api.masjid-anda.com",
-        VITE_POCKETBASE_URL: "https://db.masjid-anda.com",
+        VITE_API_SERVER_URL: "http://127.0.0.1:3001", // Match .env variable name
+        POCKETBASE_PUBLIC_URL: "http://127.0.0.1:8090", // Match .env variable name
       },
       autorestart: true,
       watch: false,

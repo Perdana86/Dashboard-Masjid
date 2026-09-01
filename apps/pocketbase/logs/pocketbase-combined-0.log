@@ -1,0 +1,10 @@
+2026-09-02T01:23:21: 2026/09/02 01:23:21 Server started at http://127.0.0.1:8090
+2026-09-02T01:23:21: ├─ REST API:  http://127.0.0.1:8090/api/
+2026-09-02T01:23:21: └─ Dashboard: http://127.0.0.1:8090/_/
+2026-09-02T01:24:24: 2026/09/02 01:24:24 Server started at http://127.0.0.1:8090
+2026-09-02T01:24:24: ├─ REST API:  http://127.0.0.1:8090/api/
+2026-09-02T01:24:24: └─ Dashboard: http://127.0.0.1:8090/_/
+2026-09-02T01:24:33: 2026/09/02 01:24:33 Server started at http://127.0.0.1:8090
+2026-09-02T01:24:33: ├─ REST API:  http://127.0.0.1:8090/api/
+2026-09-02T01:24:33: └─ Dashboard: http://127.0.0.1:8090/_/
+2026-09-02T01:24:58: 2026/09/02 01:24:58 Failed to journal log: GoError: exec: "sh": executable file not found in %PATH

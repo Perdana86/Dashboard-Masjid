@@ -11,7 +11,7 @@ server {
     error_log /var/log/nginx/dashboard-masjid.error.log;
 
     # Root directory
-    root /var/www/html/masjid/apps/web/dist;
+    root /var/www/html/masjid/dist/apps/web;
     index index.html;
 
     # Gzip
@@ -30,8 +30,14 @@ server {
         }
     }
 
-    # API Proxy (3001)
-    location /api {
+    # API Proxy (Express.js - port 3001)
+    # Handle /api/* routes EXCEPT /api/collections/* (PocketBase)
+    location /api/ {
+        # Skip PocketBase API routes
+        if ($request_uri ~ "^/api/collections/") {
+            rewrite ^/api/(.*)$ /api/$1 last;
+        }
+        
         proxy_pass http://127.0.0.1:3001;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
@@ -43,22 +49,15 @@ server {
         proxy_buffering off;
     }
 
-    # PocketBase Admin UI (full path)
-    location ~ ^/pb(/|$)(.*) {
-        proxy_pass http://127.0.0.1:8090/$2;
+    # PocketBase API Proxy (port 8090) - Collections only
+    location /api/collections/ {
+        proxy_pass http://127.0.0.1:8090/api/collections/;
         proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_buffering off;
     }
-
-    # PocketBase API (direct access)
-    location /api/ {
-        proxy_pass http://127.0.0.1:8090/api/;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
