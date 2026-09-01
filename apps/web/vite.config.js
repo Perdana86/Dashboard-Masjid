@@ -345,6 +345,7 @@ export default defineConfig({
     addTransformIndexHtml,
   ],
   server: {
+    allowedHosts: "all",
     port: 3000,
     headers: {
       "Cross-Origin-Embedder-Policy": "credentialless",
