@@ -42,6 +42,8 @@ module.exports = {
         NODE_ENV: "production",
         PORT: "3001",
         POCKETBASE_URL: "http://127.0.0.1:8090",
+        CORS_ORIGIN:
+          "http://127.0.0.1:3000,https://alamanahkeu.site,https://www.alamanahkeu.site",
       },
       autorestart: true,
       watch: false,
