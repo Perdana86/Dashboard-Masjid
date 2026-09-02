@@ -41,7 +41,8 @@ module.exports = {
       env: {
         NODE_ENV: "production",
         PORT: "3001",
-        POCKETBASE_URL: "http://127.0.0.1:8090",
+        HOST: "0.0.0.0", // Listen on all network interfaces for production
+        POCKETBASE_PUBLIC_URL: "http://127.0.0.1:8090",
         CORS_ORIGIN:
           "http://127.0.0.1:3000,https://alamanahkeu.site,https://www.alamanahkeu.site",
       },

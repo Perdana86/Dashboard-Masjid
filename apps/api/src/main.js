@@ -112,9 +112,10 @@ app.use((req, res) => {
 });
 
 const port = process.env.PORT || 3001;
+const host = process.env.HOST || "0.0.0.0"; // Listen on all network interfaces
 
-app.listen(port, () => {
-  logger.info(`🚀 API Server running on http://localhost:${port}`);
+app.listen(port, host, () => {
+  logger.info(`🚀 API Server running on http://${host}:${port}`);
 });
 
 export default app;
